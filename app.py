@@ -37,6 +37,7 @@ def obtener_videojuegos():
 def health():  # put application's code here
     return 'todo gucci!'
 
+
 @app.route('/', methods=['GET'])
 def hello_world():  # put application's code here
     return 'Esta es la API de jueguitos!'
