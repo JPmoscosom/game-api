@@ -36,7 +36,7 @@ def obtener_videojuegos():
 
 @app.route('/', methods=['GET'])
 def hello_world():  # put application's code here
-    return 'Hello World!'
+    return 'Esta es la API de jueguitos!'
 
 
 if __name__ == '__main__':
