@@ -33,6 +33,9 @@ def obtener_videojuegos():
     finally:
         cur.close()
 
+@app.route('/health', methods=['GET'])
+def health():  # put application's code here
+    return 'todo gucci!'
 
 @app.route('/', methods=['GET'])
 def hello_world():  # put application's code here
