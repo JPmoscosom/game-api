@@ -91,7 +91,8 @@ def actualizar_videojuego(id):
 
 @app.route('/health', methods=['GET'])
 def health():  # put application's code here
-    return jsonify({"Status de la API de Aviones": "200 Todo Gucci"})
+    return jsonify({"Status de la API de Video Jueagos": "200 Todo Melo",
+                    "Status de la BD de Video Juegos": "UP"})
 
 
 @app.route('/', methods=['GET'])
