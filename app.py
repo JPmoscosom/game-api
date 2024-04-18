@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 from database.db import get_connection
 import psycopg2
 
@@ -34,9 +34,64 @@ def obtener_videojuegos():
         cur.close()
 
 
+@app.route('/add', methods=['POST', 'GET'])
+def agregar_videojuego():
+    data = request.get_json()
+    print(data)
+    cur = get_connection().cursor()
+    try:
+        cur.execute(
+            """INSERT INTO videojuegos (id, titulo, descripcion, plataforma, genero, desarrollador, editor,
+            fecha_lanzamiento, precio, clasificacion_edad, puntuacion_media) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 
+            %s, %s)""",
+            (data['id'], data['titulo'], data['descripcion'], data['plataforma'], data['genero'], data['desarrollador'],
+             data['editor'], data['fecha_lanzamiento'], data['precio'], data['clasificacion_edad'],
+             data['puntuacion_media']))
+        get_connection().commit()
+        cur.connection.commit()
+        return jsonify({'mensaje': 'Videojuego agregado exitosamente'}), 201
+    except (Exception, psycopg2.Error) as error:
+        return jsonify({'mensaje': 'Error al agregar el videojuego', 'error': str(error)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/videojuegos/delete/<int:id>', methods=['DELETE'])
+def eliminar_videojuego(id):
+    cur = get_connection().cursor()
+    try:
+        cur.execute("DELETE FROM videojuegos WHERE id = %s", (id,))
+        get_connection().commit()
+        return jsonify({'mensaje': 'Videojuego eliminado exitosamente'}), 200
+    except (Exception, psycopg2.Error) as error:
+        return jsonify({'mensaje': 'Error al eliminar el videojuego', 'error': str(error)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/videojuegos/update/<int:id>', methods=['PATCH'])
+def actualizar_videojuego(id):
+    data = request.get_json()
+    cur = get_connection().cursor()
+    try:
+        cur.execute(
+            "UPDATE videojuegos SET titulo = %s, descripcion = %s, plataforma = %s, genero = %s, desarrollador = %s, "
+            "editor = %s, fecha_lanzamiento = %s, precio = %s, clasificacion_edad = %s, puntuacion_media = %s WHERE "
+            "id = %s",
+            (data['titulo'], data['descripcion'], data['plataforma'], data['genero'], data['desarrollador'],
+             data['editor'], data['fecha_lanzamiento'], data['precio'], data['clasificacion_edad'],
+             data['puntuacion_media'], id))
+        get_connection().commit()
+        return jsonify({'mensaje': 'Videojuego actualizado exitosamente'}), 200
+    except (Exception, psycopg2.Error) as error:
+        return jsonify({'mensaje': 'Error al actualizar el videojuego', 'error': str(error)}), 500
+    finally:
+        cur.close()
+
+
 @app.route('/health', methods=['GET'])
 def health():  # put application's code here
-    return 'todo gucci!'
+    return jsonify({"Status de la API de Aviones": "200 Todo Gucci"})
 
 
 @app.route('/', methods=['GET'])
