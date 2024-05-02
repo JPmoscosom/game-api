@@ -7,4 +7,4 @@ COPY . /models
 COPY . /routes
 RUN pip install gunicorn blinker build click colorama Flask itsdangerous Jinja2 MarkupSafe packaging psycopg2-binary pyproject_hooks python-decouple python-dotenv Werkzeug
 EXPOSE 443
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
+CMD exec gunicorn --bind 0.0.0.0:443 --workers 1 --threads 8 --timeout 0 app:app
