@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-aviones
+spec:
+  type: LoadBalancer
+  selector:
+    app: api-aviones
+  ports:
+  - port: 80
+    targetPort: 8080

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-aviones
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-aviones
+  template:
+    metadata:
+      labels:
+        app: api-aviones
+    spec:
+      containers:
+      - name: api-aviones
+        image: gcr.io/gravity-419021/gravity:latest
+        ports:
+        - containerPort: 443
+        env:
+        - name: DB_HOST
+          value: raja.db.elephantsql.com
+        - name: DB_USER
+          value: tthjrwtx
+        - name: DB_PASSWORD
+          value: Pp-c1BY2TC1ae-R-Fx-LnDKSIQJ9GVj2
