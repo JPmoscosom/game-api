@@ -97,7 +97,7 @@ def health():  # put application's code here
 
 @app.route('/', methods=['GET'])
 def hello_world():  # put application's code here
-    return 'Esta es la API de vide juegossssss!'
+    return 'Esta es la API de vide juegosssss!'
 
 
 if __name__ == '__main__':
