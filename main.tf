@@ -38,7 +38,7 @@ resource "google_cloud_run_service" "run_service" {
   template {
     spec {
       containers {
-        image = "gcr.io/gravity-419021/videogames-devops"
+        image = "gcr.io/gravity-419021/gravity-testing@sha256:latest"
       }
     }
   }
