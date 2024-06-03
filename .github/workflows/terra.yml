@@ -1,0 +1,59 @@
+#.github/workflows/deploy-to-prod.yaml
+name: Terraform PROD Deployment to GCP Run
+
+on:
+    push:
+      branches:
+        - master
+
+permissions:
+    contents: read
+    issues: write
+
+  
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  APP_ID: videogames-devops
+
+jobs:
+  gcp-deploy:
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'terraform')"
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY_JSON }}"
+
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: ">= 363.0.0"
+          
+
+      
+      - name: Build
+        run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+            terraform_version: 1.5.7
+
+      - name: Terraform init and validate
+        run: |
+          terraform init
+
+      - name: Terraform plan
+        run: |
+          terraform plan
+          
+      - name: Terraform apply
+        run: |
+           terraform apply -auto-approve
+          
