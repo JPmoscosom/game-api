@@ -55,5 +55,5 @@ jobs:
           
       - name: Terraform apply
         run: |
-           terraform apply -replace:google_cloud_run_service.run_service -auto-approve
+           terraform apply -replace=google_cloud_run_service.run_service -auto-approve
           
