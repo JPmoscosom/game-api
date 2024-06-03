@@ -38,7 +38,7 @@ jobs:
 
       
       - name: Build
-        run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA,gcr.io/$PROJECT_ID/$APP_ID:latest
+        run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:latest
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
